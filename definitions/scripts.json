@@ -1,0 +1,100 @@
+{
+  "scripts": [
+    {
+      "name": "The First Script",
+      "tragedy-set": "First Steps",
+      "specifics": "",
+      "story": "",
+      "hints": "",
+      "description": "",
+      "creator": "BakaFire",
+      "mastermind-victory-conditions": [
+      ],
+      "days": 5,
+      "skill": {
+        "normal": {
+          "loops": 3,
+          "difficulty": 1
+        }
+      },
+      "main-plot": "Murder Plan",
+      "sub-plots": [
+        "Shadow of the Ripper"
+      ],
+      "roles": {
+        "Boy Student": "Person",
+        "Girl Student": "Key Person",
+        "Shrine Maiden": "Serial Killer",
+        "Police Officer": "Conspiracy Theorist",
+        "Office Worker": "Killer",
+        "Doctor": "Brain"
+      },
+      "incidents": [
+        {
+          "day": 2,
+          "incident": "Murder",
+          "culprit": "Office Worker"
+        },
+        {
+          "day": 3,
+          "incident": "Suicide",
+          "fake-name": "Suicide",
+          "culprit": "Girl Student"
+        }
+      ],
+      "effects": []
+    },
+    {
+      "name": "Prevailing Secrecy",
+      "tragedy-set": "First Steps",
+      "specifics": "",
+      "story": "",
+      "hints": "",
+      "description": "",
+      "creator": "",
+      "mastermind-victory-conditions": [
+      ],
+      "days": 5,
+      "skill": {
+        "normal": {
+          "loops": 4,
+          "difficulty": 1
+        },
+        "hard": {
+          "loops": 3,
+          "difficulty": 3
+        }
+      },
+      "main-plot": "A Place to Protect",
+      "sub-plots": [
+        "An Unsettling Rumor"
+      ],
+      "roles": {
+        "Boy Student": "Cultist",
+        "Girl Student": "Person",
+        "Shrine Maiden": "Conspiracy Theorist",
+        "Office Worker": "Person",
+        "Doctor": "Key Person",
+        "Patient": "Person"
+      },
+      "incidents": [
+        {
+          "day": 1,
+          "incident": "Increasing Unease",
+          "culprit": "Shrine Maiden"
+        },
+        {
+          "day": 3,
+          "incident": "Hospital Incident",
+          "culprit": "Boy Student"
+        },
+        {
+          "day": 5,
+          "incident": "Faraway Murder",
+          "culprit": "Patient"
+        }      ],
+      "effects": []
+    }
+
+  ]
+}

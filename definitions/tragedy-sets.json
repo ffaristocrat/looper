@@ -1,0 +1,824 @@
+{
+  "tragedy-sets": [
+    {
+      "name": "First Steps",
+      "main-plots": [
+        {
+          "name": "Murder Plan",
+          "roles": {
+            "Key Person": 1,
+            "Killer": 1,
+            "Brain": 1,
+            "Cultist": 0
+          }
+        },
+        {
+          "name": "Light of the Avenger",
+          "roles": {
+            "Key Person": 0,
+            "Killer": 0,
+            "Brain": 1,
+            "Cultist": 0
+          },
+          "effects": [
+            {
+              "phase": "end_of_loop",
+              "mandatory": true,
+              "condition": "g.locations[g.role('Brain')[0].starting_location].intrigue >= 2",
+              "actions": [
+                {
+                  "action": "protagonists_lose"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "A Place to Protect",
+          "roles": {
+            "Key Person": 1,
+            "Killer": 0,
+            "Brain": 0,
+            "Cultist": 1
+          },
+          "effects": [
+            {
+              "phase": "end_of_loop",
+              "mandatory": true,
+              "condition": "g.locations['School'].intrigue >= 2",
+              "actions": [
+                {
+                  "action": "protagonists_lose"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "sub-plots": [
+        {
+          "name": "Shadow of the Ripper",
+          "roles": {
+            "Conspiracy Theorist": 1,
+            "Serial Killer": 1,
+            "Curmudgeon": 0,
+            "Friend": 0
+          }
+        },
+        {
+          "name": "An Unsettling Rumor",
+          "roles": {
+            "Conspiracy Theorist": 1,
+            "Serial Killer": 0,
+            "Curmudgeon": 0,
+            "Friend": 0
+          },
+          "effects": [
+            {
+              "phase": "mastermind",
+              "once_per_loop": true,
+              "mandatory": false,
+              "choices": [
+                {
+                  "type": "locations"
+                }
+              ],
+              "actions": [
+                {
+                  "action": "alter_intrigue",
+                  "amount": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "A Hideous Script (0)",
+          "display-name": "A Hideous Script",
+          "roles": {
+            "Conspiracy Theorist": 0,
+            "Serial Killer": 0,
+            "Curmudgeon": 0,
+            "Friend": 1
+          }
+        },
+        {
+          "name": "A Hideous Script (1)",
+          "display-name": "A Hideous Script",
+          "roles": {
+            "Conspiracy Theorist": 0,
+            "Serial Killer": 0,
+            "Curmudgeon": 1,
+            "Friend": 1
+          }
+        },
+        {
+          "name": "A Hideous Script (2)",
+          "display-name": "A Hideous Script",
+          "roles": {
+            "Conspiracy Theorist": 0,
+            "Serial Killer": 0,
+            "Curmudgeon": 2,
+            "Friend": 1
+          }
+        }
+      ],
+      "roles": [
+        {
+          "name": "Person",
+          "goodwill-refusal": null,
+          "unkillable": false,
+          "max_count": null,
+          "effects": []
+        },
+        {
+          "name": "Key Person",
+          "goodwill_refusal": null,
+          "effects": [
+            {
+              "phase": "constant",
+              "condition": "c.dead",
+              "mandatory": true,
+              "actions": [
+                {
+                  "action": "protagonists_lose"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Killer",
+          "goodwill_refusal": "optional",
+          "effects": [
+            {
+              "phase": "end_of_day",
+              "mandatory": false,
+              "condition": "g.roles('Key Person')[0].intrigue >= 2 and g.same_location(c, 'Key Person')",
+              "actions": [
+                {
+                  "action": "mark_character_for_death",
+                  "character": "g.roles('Key Person')[0]"
+                }
+              ]
+            },
+            {
+              "phase": "end_of_day",
+              "mandatory": false,
+              "condition": "c.intrigue >= 4",
+              "actions": [
+                {
+                  "action": "protagonists_die"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Brain",
+          "goodwill_refusal": "optional",
+          "effects": [
+            {
+              "phase": "mastermind",
+              "mandatory": false,
+              "choices": [
+                {
+                  "type": "characters+locations",
+                  "condition": "item in g.location_and_characters(c, include_self=True)"
+                }
+              ],
+              "actions": [
+                {
+                  "action": "alter_intrigue",
+                  "amount": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Cultist",
+          "goodwill_refusal": "mandatory",
+          "ignore-forbid": [
+            "intrigue"
+          ],
+          "ignore-forbid-location": [
+            "intrigue"
+          ]
+        },
+        {
+          "name": "Conspiracy Theorist",
+          "max-number": 1,
+          "effects": [
+            {
+              "phase": "mastermind",
+              "mandatory": false,
+              "choices": [
+                {
+                  "type": "characters",
+                  "condition": "item.location in g.location(c.location)"
+                }
+              ],
+              "actions": [
+                {
+                  "action": "alter_intrigue",
+                  "value": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Serial Killer",
+          "effects": [
+            {
+              "phase": "end_of_day",
+              "mandatory": true,
+              "condition": "len(g.same_location(c)) == 1",
+              "actions": [
+                {
+                  "action": "mark_character_for_death",
+                  "character": "g.same_location(c)[0]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Curmudgeon",
+          "goodwill-refusal": "optional"
+        },
+        {
+          "name": "Friend",
+          "max-number": 2,
+          "effects": [
+            {
+              "phase": "end_of_loop",
+              "mandatory": true,
+              "condition": "c.dead",
+              "actions": [
+                {
+                  "action": "reveal_role"
+                },
+                {
+                  "action": "protagonists_lose"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "incidents": [
+        {
+          "name": "Murder",
+          "effects": [
+            {
+              "phase": "incident_resolve",
+              "condition": "g.same_location(c)",
+              "mandatory": true,
+              "choices": [
+                {
+                  "type": "characters",
+                  "condition": "item in g.same_location(c)"
+                }
+              ],
+              "actions": [
+                {
+                  "action": "mark_character_for_death"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Increasing Unease",
+          "effects": [
+            {
+              "phase": "incident_resolve",
+              "condition": "g.same_location(c)",
+              "mandatory": true,
+              "choices": [
+                {
+                  "type": "characters",
+                  "condition": "item in g.same_location(c)"
+                }
+              ],
+              "actions": [
+                {
+                  "action": "alter_paranoia",
+                  "value": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Foul Evil",
+          "effects": [
+            {
+              "phase": "incident_resolve",
+              "actions": [
+                {
+                  "action": "alter_intrigue",
+                  "location": "g.location('Shrine')",
+                  "value": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Suicide",
+          "effects": [
+            {
+              "phase": "incident_resolve",
+              "actions": [
+                {
+                  "action": "mark_character_for_death",
+                  "character": "c"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Hospital Incident",
+          "effects": [
+            {
+              "phase": "incident_resolve",
+              "condition": "g.location('Hospital').intrigue >= 1",
+              "mandatory": true,
+              "choices": [
+                {
+                  "type": "characters",
+                  "choice": false,
+                  "condition": "item in g.location('Hospital')"
+                }
+              ],
+              "actions": [
+                {
+                  "action": "mark_character_for_death",
+                  "character": "c"
+                }
+              ]
+            },
+            {
+              "phase": "incident_resolve",
+              "condition": "g.location('Hospital').intrigue >= 2",
+              "mandatory": true,
+              "actions": [
+                {
+                  "action": "protagonists_die"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Faraway Murder",
+          "effects": [
+            {
+              "phase": "incident_resolve",
+              "condition": "[ch for ch in g.characters if ch.intrigue >= 2]",
+              "mandatory": true,
+              "choices": [
+                {
+                  "type": "characters",
+                  "condition": "item.intrigue >= 2"
+                }
+              ],
+              "actions": [
+                {
+                  "action": "mark_character_for_death"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Missing Person",
+          "effects": [
+            {
+              "phase": "incident_resolve",
+              "mandatory": true,
+              "choices": [
+                {
+                  "type": "locations"
+                }
+              ],
+              "actions": [
+                {
+                  "action": "move_character",
+                  "character": "c",
+                  "location": "item"
+                },
+                {
+                  "action": "alter_intrigue",
+                  "value": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Spreading",
+          "effects": [
+            {
+              "phase": "incident_resolve",
+              "mandatory": true,
+              "condition": "len(g.characters) >= 2",
+              "choices": [
+                {
+                  "type": "characters",
+                  "condition": "item.goodwill >= (2 if max([ch.goodwill for ch in g.characters]) >= 2 else 1)"
+                },
+                {
+                  "type": "characters",
+                  "condition": "item not in d[0]"
+                }
+              ],
+              "actions": [
+                {
+                  "decision": 0,
+                  "action": "alter_goodwill",
+                  "value": -2
+                },
+                {
+                  "decision": 1,
+                  "action": "alter_goodwill",
+                  "value": 2
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "sub-plot-count": 1,
+      "final-guess": false,
+      "abilities": []
+    },
+    {
+      "name": "Basic Tragedy",
+      "main-plots": [
+        {
+          "name": "Murder Plan",
+          "main": true,
+          "roles": {
+            "Key Person": 1,
+            "Killer": 1,
+            "Brain": 1,
+            "Cultist": 0
+          }
+        },
+        {
+          "name": "The Sealed Item",
+          "roles": {
+            "Key Person": 0,
+            "Killer": 0,
+            "Brain": 1,
+            "Cultist": 1
+          },
+          "effects": [
+            {
+              "phase": "end_of_loop",
+              "mandatory": true,
+              "condition": "g.locations['Shrine'].intrigue >= 2",
+              "actions": [
+                {
+                  "action": "protagonists_lose"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Sign with me!",
+          "main": true,
+          "roles": {
+            "Key Person": 1,
+            "Killer": 0,
+            "Brain": 0,
+            "Cultist": 0,
+            "Time Traveler": 0,
+            "Witch": 0
+          },
+          "effects": [
+            {
+              "phase": "end_of_loop",
+              "mandatory": true,
+              "condition": "g.role('Key Person')[0].intrigue >= 2",
+              "actions": [
+                {
+                  "action": "protagonists_lose"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Change of Future",
+          "main": true,
+          "roles": {
+            "Key Person": 0,
+            "Killer": 0,
+            "Brain": 0,
+            "Cultist": 1,
+            "Time Traveler": 1,
+            "Witch": 0
+          },
+          "effects": [
+            {
+              "phase": "end_of_loop",
+              "mandatory": true,
+              "condition": "'Butterfly Effect' in g.incidents_occurred",
+              "actions": [
+                {
+                  "action": "protagonists_lose"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Giant Time Bomb",
+          "main": true,
+          "roles": {
+            "Key Person": 0,
+            "Killer": 0,
+            "Brain": 0,
+            "Cultist": 0,
+            "Time Traveler": 0,
+            "Witch": 1
+          },
+          "effects": [
+            {
+              "phase": "end_of_loop",
+              "mandatory": true,
+              "condition": "g.locations[g.role('Witch')[0].starting_location].intrigue >= 2",
+              "actions": [
+                {
+                  "action": "protagonists_lose"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "sub-plots": [
+        {
+          "name": "Paranoia Virus",
+          "main": false,
+          "roles": {
+            "Friend": 0,
+            "Conspiracy Theorist": 1,
+            "Lover": 0,
+            "Loved One": 0,
+            "Serial Killer": 0,
+            "Factor": 0
+          },
+          "effects": [
+            {
+              "phase": "passive",
+              "context": "characters",
+              "attribute": "role",
+              "condition": "t.starting_role == 'Person' and t.paranoia >= 3",
+              "actions": [
+                {
+                  "eval": "'Serial Killer'"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Unknown Factor X",
+          "main": false,
+          "roles": {
+            "Friend": 0,
+            "Conspiracy Theorist": 0,
+            "Lover": 0,
+            "Loved One": 0,
+            "Serial Killer": 0,
+            "Factor": 1
+          }
+        }
+      ],
+      "roles": [],
+      "sub-plot-count": 2,
+      "final-guess": true,
+      "abilities": [],
+      "incidents": [
+        {
+          "name": "Murder",
+          "effects": [
+            {
+              "phase": "incident_resolve",
+              "condition": "g.same_location(c)",
+              "mandatory": true,
+              "choices": [
+                {
+                  "type": "characters",
+                  "condition": "item in g.same_location(c)"
+                }
+              ],
+              "actions": [
+                {
+                  "action": "mark_character_for_death"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Increasing Unease",
+          "effects": [
+            {
+              "phase": "incident_resolve",
+              "condition": "g.same_location(c)",
+              "mandatory": true,
+              "choices": [
+                {
+                  "type": "characters",
+                  "condition": "item in g.same_location(c)"
+                }
+              ],
+              "actions": [
+                {
+                  "action": "alter_paranoia",
+                  "value": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Foul Evil",
+          "effects": [
+            {
+              "phase": "incident_resolve",
+              "actions": [
+                {
+                  "action": "alter_intrigue",
+                  "location": "g.location('Shrine')",
+                  "value": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Suicide",
+          "effects": [
+            {
+              "phase": "incident_resolve",
+              "actions": [
+                {
+                  "action": "mark_character_for_death",
+                  "character": "c"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Hospital Incident",
+          "effects": [
+            {
+              "phase": "incident_resolve",
+              "condition": "g.location('Hospital').intrigue >= 1",
+              "mandatory": true,
+              "choices": [
+                {
+                  "type": "characters",
+                  "choice": false,
+                  "condition": "item in g.location('Hospital')"
+                }
+              ],
+              "actions": [
+                {
+                  "action": "mark_character_for_death",
+                  "character": "c"
+                }
+              ]
+            },
+            {
+              "phase": "incident_resolve",
+              "condition": "g.location('Hospital').intrigue >= 2",
+              "mandatory": true,
+              "actions": [
+                {
+                  "action": "protagonists_die"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Faraway Murder",
+          "effects": [
+            {
+              "phase": "incident_resolve",
+              "condition": "[ch for ch in g.characters if ch.intrigue >= 2]",
+              "mandatory": true,
+              "choices": [
+                {
+                  "type": "characters",
+                  "condition": "item.intrigue >= 2"
+                }
+              ],
+              "actions": [
+                {
+                  "action": "mark_character_for_death"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Missing Person",
+          "effects": [
+            {
+              "phase": "incident_resolve",
+              "mandatory": true,
+              "choices": [
+                {
+                  "type": "locations"
+                }
+              ],
+              "actions": [
+                {
+                  "action": "move_character",
+                  "character": "c",
+                  "location": "item"
+                },
+                {
+                  "action": "alter_intrigue",
+                  "value": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Spreading",
+          "effects": [
+            {
+              "phase": "incident_resolve",
+              "mandatory": true,
+              "condition": "len(g.characters) >= 2",
+              "choices": [
+                {
+                  "type": "characters",
+                  "condition": "item.goodwill >= (2 if max([ch.goodwill for ch in g.characters]) >= 2 else 1)"
+                },
+                {
+                  "type": "characters",
+                  "condition": "item not in d[0]"
+                }
+              ],
+              "actions": [
+                {
+                  "decision": 0,
+                  "action": "alter_goodwill",
+                  "value": -2
+                },
+                {
+                  "decision": 1,
+                  "action": "alter_goodwill",
+                  "value": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Butterfly Effect",
+          "effects": [
+            {
+              "phase": "incident_resolve",
+              "mandatory": true,
+              "choices": [
+                {
+                  "type": "characters",
+                  "condition": "item in g.location(c.location)"
+                },
+                {
+                  "type": "tokens",
+                  "condition": "item in ['goodwill', 'intrigue', 'paranoia']"
+                }
+              ],
+              "actions": [
+                {
+                  "decision": 0,
+                  "action": "alter_token",
+                  "token": "d[1][0]",
+                  "value": 1
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

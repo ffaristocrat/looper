@@ -1,0 +1,650 @@
+{
+  "characters": [
+    {
+      "name": "__TEST",
+      "paranoia-limit": 3,
+      "traits": [
+        "student",
+        "boy"
+      ],
+      "restricted-locations": [
+        "Shrine"
+      ],
+      "starting-location": "School",
+      "script-no-plot-role": false,
+      "no-action-cards": false,
+      "no-movement-cards": false,
+      "use-location-cards": false,
+      "enter-on-loop": false,
+      "enter-on-day": false,
+      "invalid-roles": [],
+      "effects": []
+    },
+    {
+      "name": "Boy Student",
+      "paranoia-limit": 2,
+      "traits": [
+        "student",
+        "boy"
+      ],
+      "restricted_locations": [
+      ],
+      "starting_location": "School",
+      "effects": [
+        {
+          "phase": "goodwill",
+          "goodwill-required": 2,
+          "desc": "-1 Paranoia on any other student in same location.",
+          "choices": [
+            {
+              "type": "characters",
+              "condition": "item in g.same_location(c, trait='student')"
+            }
+          ],
+          "actions": [
+            {
+              "action": "alter_paranoia",
+              "value": -1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Girl Student",
+      "paranoia-limit": 2,
+      "traits": [
+        "student",
+        "girl"
+      ],
+      "restricted_locations": [
+      ],
+      "starting_location": "School",
+      "effects": [
+        {
+          "phase": "goodwill",
+          "goodwill-required": 2,
+          "desc": "-1 Paranoia on any other student in same location.",
+          "choices": [
+            {
+              "type": "characters",
+              "condition": "item in g.same_location(c, trait='student')"
+            }
+          ],
+          "actions": [
+            {
+              "action": "alter_paranoia",
+              "value": -1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Rich Man's Daughter",
+      "paranoia-limit": 1,
+      "traits": [
+        "student",
+        "girl"
+      ],
+      "restricted_locations": [
+      ],
+      "starting_location": "School",
+      "effects": [
+        {
+          "phase": "goodwill",
+          "goodwill-required": 3,
+          "desc": "(School/City) +1 Goodwill on character in same location.",
+          "condition": "c.location in ['School', 'City']",
+          "choices": [
+            {
+              "type": "characters",
+              "condition": "item in g.location(c.location)"
+            }
+          ],
+          "actions": [
+            {
+              "action": "alter_goodwill",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Class Rep",
+      "paranoia-limit": 2,
+      "traits": [
+        "student",
+        "girl"
+      ],
+      "starting_location": "School",
+      "effects": [
+        {
+          "phase": "goodwill",
+          "goodwill-required": 2,
+          "desc": "Leader gets one (1 x ∞) card back",
+          "once_per_loop": true,
+          "choices": [
+            {
+              "type": "cards",
+              "condition": "item in ONCE_PER_LOOP and item in g.cards_played[self.leader]"
+            }
+          ],
+          "actions": [
+            {
+              "action": "return_once_per_loop_card"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Mystery Boy",
+      "paranoia-limit": 3,
+      "traits": [
+        "student",
+        "boy"
+      ],
+      "starting_location": "School",
+      "script_no_plot_role": true,
+      "effects": [
+        {
+          "phase": "goodwill",
+          "goodwill-required": 3,
+          "cannot-be-refused": true,
+          "desc": "(immune to Goodwill Refusal) Reveal own role.",
+          "actions": [
+            {
+              "action": "reveal_role",
+              "value": "c"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Shrine Maiden",
+      "paranoia-limit": 2,
+      "traits": [
+        "student",
+        "girl"
+      ],
+      "restricted_locations": [
+        "City"
+      ],
+      "starting_location": "Shrine",
+      "effects": [
+        {
+          "phase": "goodwill",
+          "goodwill-required": 3,
+          "desc": "If in Shrine, Remove 1 Intrigue from the Shrine",
+          "condition": "c.location == 'Shrine'",
+          "actions": [
+            {
+              "action": "alter_intrigue",
+              "location": "'Shrine'",
+              "value": -1
+            }
+          ]
+        },
+        {
+          "phase": "goodwill",
+          "goodwill-required": 3,
+          "desc": "Reveal the role of any character in this Location",
+          "once_per_loop": true,
+          "choices": [
+            {
+              "type": "characters",
+              "condition": "item in g.location(c.location)"
+            }
+          ],
+          "actions": [
+            {
+              "action": "reveal_role"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Alien",
+      "paranoia-limit": 2,
+      "traits": [
+        "girl"
+      ],
+      "restricted_locations": [
+        "Hospital"
+      ],
+      "starting_location": "Shrine",
+      "effects": [
+        {
+          "phase": "goodwill",
+          "goodwill-required": 4,
+          "desc": "Kill any character in this location",
+          "once_per_loop": true,
+          "choices": [
+            {
+              "type": "characters",
+              "condition": "item in g.location(c.location)"
+            }
+          ],
+          "actions": [
+            {
+              "action": "mark_character_for_death"
+            }
+          ]
+        },
+        {
+          "phase": "goodwill",
+          "goodwill-required": 5,
+          "desc": "Revive any corpse in this location",
+          "once_per_loop": true,
+          "choices": [
+            {
+              "type": "characters",
+              "condition": "item.dead and item.location == c.location"
+            }
+          ],
+          "actions": [
+            {
+              "action": "resurrect_character"
+            }
+          ]
+
+        }
+      ]
+    },
+    {
+      "name": "Godly Being",
+      "paranoia-limit": 3,
+      "traits": [
+        "man",
+        "woman"
+      ],
+      "starting_location": "Shrine",
+      "enter-on-loop": true,
+      "effects": [
+        {
+          "phase": "goodwill",
+          "goodwill-required": 3,
+          "desc": "Reveal culprit of any incident",
+          "ability": "reveal_culprit",
+          "once_per_loop": true,
+          "choices": [
+            {
+              "type": "days",
+              "condition": "item in g.incidents"
+            }
+          ],
+          "actions": [
+            {
+              "action": "reveal_culprit"
+            }
+          ]
+        },
+        {
+          "phase": "goodwill",
+          "goodwill-required": 5,
+          "desc": "Remove 1 intrigue from this location or any character in this location",
+          "choices": [
+            {
+              "type": "characters+locations",
+              "condition": "item in g.location_and_characters(c, include_self=True)"
+            }
+          ],
+          "actions": [
+            {
+              "action": "alter_intrigue",
+              "value": -1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Police Officer",
+      "paranoia-limit": 3,
+      "traits": [
+        "adult",
+        "man"
+      ],
+      "starting_location": "City",
+      "effects": [
+        {
+          "phase": "goodwill",
+          "goodwill-required": 4,
+          "desc": "Reveal culprit of any incident that has occurred",
+          "once_per_loop": true,
+          "choices": [
+            {
+              "type": "days",
+              "condition": "item < g.day and g.incident.get(item) and g.incident[item].occurred"
+            }
+          ],
+          "actions": [
+            {
+              "action": "reveal_culprit"
+            }
+          ]
+        },
+        {
+          "phase": "goodwill",
+          "goodwill-required": 5,
+          "once_per_loop": true,
+          "desc": "Put an Extra marker on another character in same location. Remove that marker to prevent that character from dying.",
+
+          "choices": [
+            {
+              "type": "characters",
+              "condition": "item in g.same_location(c, include_self=True)"
+            }
+          ],
+          "actions": [
+            {
+              "action": "alter_extra",
+              "value": 1
+            },
+            {
+              "action": "protection_flag"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Office Worker",
+      "paranoia-limit": 2,
+      "traits": [
+        "adult",
+        "man"
+      ],
+      "restricted_locations": [
+        "School"
+      ],
+      "starting_location": "City",
+      "effects": [
+        {
+          "phase": "goodwill",
+          "goodwill-required": 3,
+          "desc": "Reveal own role.",
+          "actions": [
+            {
+              "action": "reveal_role",
+              "value": "c"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Informer",
+      "paranoia-limit": 3,
+      "traits": [
+        "adult",
+        "woman"
+      ],
+      "starting_location": "City",
+      "effects": [
+        {
+          "phase": "goodwill",
+          "goodwill-required": 5,
+          "desc": "Leader names the title of any subplot. Then, the Mastermind must name the title of another active subplot.",
+          "once_per_loop": true,
+          "choices": [
+            {
+              "type": "sub-plots"
+            }
+          ],
+          "actions": [
+            {
+              "action": "reveal_sub_plot",
+              "sub_plot": "item"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Pop Idol",
+      "paranoia-limit": 2,
+      "traits": [
+        "student",
+        "girl"
+      ],
+      "starting_location": "City",
+      "effects": [
+        {
+          "phase": "goodwill",
+          "goodwill-required": 3,
+          "desc": "-1 Paranoia on character in same location.",
+          "choices": [
+            {
+              "type": "characters",
+              "condition": "item in g.same_location(c, include_self=True)"
+            }
+          ],
+          "actions": [
+            {
+              "action": "alter_paranoia",
+              "value": -1
+            }
+          ]
+        },
+        {
+          "phase": "goodwill",
+          "goodwill-required": 4,
+          "desc": "+1 Goodwill on character in same location.",
+          "choices": [
+            {
+              "type": "characters",
+              "condition": "item in g.same_location(c, include_self=True)"
+            }
+          ],
+          "actions": [
+            {
+              "action": "alter_goodwill",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Journalist",
+      "paranoia-limit": 2,
+      "traits": [
+        "adult",
+        "man"
+      ],
+      "starting_location": "City",
+      "effects": [
+        {
+          "phase": "goodwill",
+          "goodwill-required": 2,
+          "desc": "-1 Paranoia on character in same location.",
+          "choices": [
+            {
+              "type": "characters",
+              "condition": "item in g.same_location(c, include_self=True)"
+            }
+          ],
+          "actions": [
+            {
+              "action": "alter_paranoia",
+              "value": -1
+            }
+          ]
+        },
+        {
+          "phase": "goodwill",
+          "goodwill-required": 2,
+          "desc": ":+1 Intrigue on same location or character in same location.",
+          "choices": [
+            {
+              "type": "characters+locations",
+              "condition": "item in g.location_and_characters(c, include_self=True)"
+            }
+          ],
+          "actions": [
+            {
+              "action": "alter_intrigue",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Boss",
+      "paranoia-limit": 4,
+      "traits": [
+        "adult",
+        "man"
+      ],
+      "starting_location": "City",
+      "has-turf": true,
+      "effects": [
+        {
+          "phase": "goodwill",
+          "goodwill-required": 5,
+          "desc": "Reveal role of character in turf.",
+          "once_per_loop": true,
+          "choices": [
+            {
+              "type": "characters",
+              "condition": "item in g.location(c.turf)"
+            }
+          ],
+          "actions": [
+            {
+              "action": "reveal_role"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Doctor",
+      "paranoia-limit": 1,
+      "traits": [
+        "student",
+        "girl"
+      ],
+      "restricted_locations": [
+      ],
+      "starting_location": "School",
+      "effects": [
+        {
+          "phase": "goodwill",
+          "goodwill-required": 3,
+          "desc": "+1/-1 Paranoia on other character in same location.",
+          "choices": [
+            {
+              "type": "characters",
+              "condition": "item in g.same_location(c)"
+            },
+            {
+              "type": "amounts"
+            }
+          ],
+          "actions": [
+            {
+              "action": "alter_paranoia",
+              "value": "d[1][0]"
+            }
+          ]
+        },
+        {
+          "phase": "mastermind",
+          "desc": "+1/-1 Paranoia on other character in same location.",
+          "condition": "g.roles[c.role].get('goodwill-refusal')",
+          "choices": [
+            {
+              "type": "characters",
+              "condition": "item in g.same_location(c)"
+            },
+            {
+              "type": "amounts"
+            }
+          ],
+          "actions": [
+            {
+              "action": "alter_paranoia",
+              "value": "d[1][0]"
+            }
+          ]
+        }
+
+      ]
+    },
+    {
+      "name": "Patient",
+      "paranoia-limit": 2,
+      "traits": [
+        "boy"
+      ],
+      "restricted_locations": [
+        "Shrine",
+        "School",
+        "City"
+      ],
+      "starting_location": "Hospital"
+    },
+    {
+      "name": "Nurse",
+      "paranoia-limit": 3,
+      "traits": [
+        "adult",
+        "woman"
+      ],
+      "restricted_locations": [
+      ],
+      "starting_location": "Hospital",
+      "effects": [
+        {
+          "phase": "goodwill",
+          "goodwill-required": 2,
+          "cannot-be-refused": true,
+          "desc": "-1 Paranoia on any panicked character in same location.",
+          "choices": [
+            {
+              "type": "characters",
+              "condition": "item in g.same_location(c, trait='panicked')"
+            }
+          ],
+          "actions": [
+            {
+              "action": "alter_paranoia",
+              "value": -1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Henchman",
+      "paranoia-limit": 3,
+      "traits": [
+        "adult",
+        "man"
+      ],
+      "restricted_locations": [
+      ],
+      "starting_location": null,
+      "effects": [
+        {
+          "phase": "goodwill",
+          "goodwill-required": 3,
+          "desc": "This character does not trigger any more incidents this loop.",
+          "actions": [
+            {
+              "action": "do_not_trigger_incidents",
+              "character": "c"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
