@@ -23,9 +23,9 @@ class Character:
         self.name = name
         self.char_def = self.game.character_definitions[name]
 
-        self.paranoia_limit = self.char_def['paranoia-limit']
-        self._traits = self.char_def.get('traits', [])[:]
-        self.no_action_cards = self.char_def.get('no-action-cards', False)
+        self.paranoia_limit = self.char_def["paranoia-limit"]
+        self._traits = self.char_def.get("traits", [])[:]
+        self.no_action_cards = self.char_def.get("no-action-cards", False)
 
         self.starting_role: str = None
         self.starting_location: str = None
@@ -57,12 +57,12 @@ class Character:
     def traits(self):
         traits = self._traits[:]
         if self.paranoia >= self.paranoia_limit:
-            traits.append('panicked')
+            traits.append("panicked")
         if self.dead:
-            traits.append('corpse')
-        
+            traits.append("corpse")
+
         return traits
-    
+
     @property
     def panicked(self):
         return self.paranoia >= self.paranoia_limit
@@ -70,7 +70,7 @@ class Character:
     @property
     def paranoia_incident(self):
         return self.paranoia
-    
+
     @property
     def same(self):
         return self.game.same_location(self)
@@ -95,12 +95,12 @@ class Character:
         self.history.append(snapshot)
 
     def render(self, mastermind=True):
-        string = f'{self.name}: '
-        string += 'G' * self.goodwill
-        string += 'I' * self.intrigue
-        string += 'P' * self.paranoia
-        string += 'X' * self.extra
-        
+        string = f"{self.name}: "
+        string += "G" * self.goodwill
+        string += "I" * self.intrigue
+        string += "P" * self.paranoia
+        string += "X" * self.extra
+
         if mastermind:
             string += f"({self.role})"
 

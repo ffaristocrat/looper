@@ -1,4 +1,3 @@
-
 import logging
 
 LOG = logging.getLogger(__name__)
@@ -32,10 +31,10 @@ class Effect:
 
 class ProtagonistsLose(Effect):
     def execute(self):
-        LOG.info('Protagonists lose')
+        LOG.info("Protagonists lose")
         raise ProtagonistsLoseException
 
 
 class KillCharacter(Effect):
     def execute(self):
-        LOG.info('{}')
+        LOG.info("{}")

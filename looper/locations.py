@@ -16,13 +16,13 @@ class Snapshot(NamedTuple):
 
 
 class Location:
-    name = 'TEST'
-    
+    name = "TEST"
+
     def __init__(self, game, name):
         self.game = game
         self.name = name
         self.history = []
-        
+
         self.paranoia = 0
         self.intrigue = 0
         self.goodwill = 0
@@ -42,14 +42,14 @@ class Location:
             self.mastermind_card,
             self.protagonist_card,
         )
-        
+
         self.history.append(snapshot)
 
     def render(self):
-        string = f'{self.name}: '
-        string += 'G' * self.goodwill
-        string += 'I' * self.intrigue
-        string += 'P' * self.paranoia
-        string += 'X' * self.extra
+        string = f"{self.name}: "
+        string += "G" * self.goodwill
+        string += "I" * self.intrigue
+        string += "P" * self.paranoia
+        string += "X" * self.extra
 
         return string
